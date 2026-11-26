@@ -52,6 +52,8 @@ public class SecurityConfig {
                         .spa()
                         .csrfTokenRepository(csrfTokenRepository))
                 .securityContext(context -> context.securityContextRepository(securityContextRepository))
+                // API 서버라 "로그인 후 원래 요청으로 돌아가기"가 필요 없다. 켜 두면 401마다 빈 세션이 생긴다.
+                .requestCache(cache -> cache.disable())
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(errorHandler)
                         .accessDeniedHandler(errorHandler))

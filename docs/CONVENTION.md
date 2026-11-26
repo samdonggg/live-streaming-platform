@@ -90,7 +90,7 @@ fix/18     ─┼─ ③ PR → dev ─ ④ PR → main
 docs/20    ─┘   (이슈별 브랜치)    (dev에 모인 코드)
 ```
 
-## 2. 백엔드 (Java 21 / Spring Boot)
+## 2. 백엔드 (Java 25 / Spring Boot 4)
 
 ### 2.1 패키지 구조
 
@@ -260,7 +260,7 @@ src/
 - 서버 데이터는 TanStack Query로 관리한다. 전역 상태 라이브러리는 필요해질 때 도입한다.
 - `any`를 쓰지 않는다. 불가피하면 `unknown`을 쓰고 좁힌다.
 - WebRTC·미디어 코드는 `features/streaming`에 모은다. 컴포넌트가 언마운트되면 `MediaStreamTrack.stop()`과 `RTCPeerConnection.close()`를 반드시 호출한다.
-- 포매팅과 린트는 Prettier + ESLint를 따른다.
+- 포매팅은 Prettier(`pnpm format`), 린트는 oxlint(`pnpm lint`)를 따른다.
 
 ## 5. 테스트
 

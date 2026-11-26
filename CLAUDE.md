@@ -8,16 +8,18 @@
 main과 dev에 직접 커밋하지 않는다. 이슈별 브랜치를 만들어 dev로 PR을 보낸다.
 
 ## 구조
-- apps/api — Spring Boot 3, Java 21, Gradle, Spring Security, JPA, Flyway, PostgreSQL
+- apps/api — Spring Boot 4.2, Java 25, Gradle, Spring Security, JPA, Flyway, PostgreSQL
 - apps/web — React + Vite + TypeScript, pnpm
 - infra/ — docker-compose.yml, mediamtx.yml
 - docs/ — CONVENTION.md 등 문서
 
 ## 명령
-- 인프라: `docker compose -f infra/docker-compose.yml up -d` (postgres, mediamtx)
-- 백엔드 실행: `cd apps/api && ./gradlew bootRun`
-- 백엔드 테스트: `cd apps/api && ./gradlew test`
-- 프론트 실행: `cd apps/web && pnpm install && pnpm dev`
+- 환경변수: 처음 한 번 `cp .env.example .env`. 백엔드는 루트 .env를 직접 읽는다.
+- 인프라: `docker compose --env-file .env -f infra/docker-compose.yml up -d` (postgres, mediamtx)
+- 백엔드 실행: `cd apps/api && ./gradlew bootRun` (http://localhost:8080, 헬스 체크 /api/health)
+- 백엔드 테스트: `cd apps/api && ./gradlew test` (Testcontainers를 쓰므로 Docker가 켜져 있어야 한다)
+- 프론트 실행: `cd apps/web && pnpm install && pnpm dev` (http://localhost:5173)
+- 프론트 검사: `cd apps/web && pnpm lint && pnpm build`, 포매팅 `pnpm format`
 - API 타입 생성: `cd apps/web && pnpm gen:api` (백엔드 실행 중일 때. /v3/api-docs에서 TS 타입 생성)
 
 ## 규칙

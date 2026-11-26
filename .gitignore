@@ -1,0 +1,26 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 환경변수 (.env.example만 커밋)
+.env
+.env.*
+!.env.example
+
+# 백엔드 (Gradle)
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# 프론트엔드 (Node)
+node_modules/
+dist/
+*.log
+
+# 녹화 파일
+recordings/

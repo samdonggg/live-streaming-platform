@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: api
+  # 저장소 루트의 .env를 읽는다. 없으면 아래 기본값(로컬 docker compose 기준)을 쓴다.
+  config:
+    import: optional:file:../../.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${POSTGRES_DB:livestream}
+    username: ${POSTGRES_USER:livestream}
+    password: ${POSTGRES_PASSWORD:livestream}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+management:
+  endpoints:
+    web:
+      # 프론트 개발 서버의 /api 프록시로 헬스 체크를 확인할 수 있게 /api/health로 노출한다.
+      base-path: /api
+      exposure:
+        include: health

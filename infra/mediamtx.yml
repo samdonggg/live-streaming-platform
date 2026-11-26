@@ -1,0 +1,26 @@
+# MediaMTX 설정. 여기에 없는 항목은 MediaMTX 기본값을 쓴다.
+# 전체 항목: https://github.com/bluenviron/mediamtx/blob/main/mediamtx.yml
+
+logLevel: info
+
+# 브라우저 송출·시청에 쓰지 않는 프로토콜은 끈다.
+rtsp: no
+rtmp: no
+srt: no
+moq: no
+
+api: yes
+apiAddress: :9997
+
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+
+hls: yes
+hlsAddress: :8888
+
+# TODO(PC 송출 단계): authMethod: http 로 바꿔 백엔드 /internal/mediamtx/auth 에서 송출·시청 권한을 검사한다.
+# 지금은 로컬 개발용 기본 인증(누구나 송출·시청 가능)이다.
+
+paths:
+  all_others:

@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.livestream.TestcontainersConfiguration;
+import com.livestream.auth.domain.AuthUser;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,8 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +46,26 @@ class AuthApiTest {
                 .andExpect(jsonPath("$.loginId").value("alice01"))
                 .andExpect(jsonPath("$.nickname").value("앨리스"))
                 .andExpect(jsonPath("$.password").doesNotExist());
+    }
+
+    @Test
+    void 로그인하면_세션에_비밀번호를_남기지_않는다() throws Exception {
+        signup("henry01", "password123", "헨리");
+
+        MockHttpSession passwordLogin = login("henry01", "password123");
+        MockHttpSession testAccountLogin = (MockHttpSession) mockMvc.perform(post("/api/auth/test-login").with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"loginId\":\"viewer1\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getRequest().getSession(false);
+
+        for (MockHttpSession session : List.of(passwordLogin, testAccountLogin)) {
+            SecurityContext context = (SecurityContext) session.getAttribute(
+                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+            AuthUser principal = (AuthUser) context.getAuthentication().getPrincipal();
+            assertThat(principal.getPassword()).isNull();
+            assertThat(context.getAuthentication().getCredentials()).isNull();
+        }
     }
 
     @Test

@@ -20,3 +20,22 @@ management:
       base-path: /api
       exposure:
         include: health
+
+server:
+  servlet:
+    session:
+      timeout: 12h
+      cookie:
+        http-only: true
+        same-site: lax
+
+app:
+  # 평가·시연용 테스트 계정. 켜면 서버 시작 시 계정을 만들고, 로그인 화면에서 비밀번호 없이 바로 로그인할 수 있다.
+  test-accounts:
+    enabled: ${TEST_ACCOUNTS_ENABLED:false}
+    password: ${TEST_ACCOUNT_PASSWORD:test1234}
+    accounts:
+      - login-id: streamer1
+        nickname: 테스트방송인
+      - login-id: viewer1
+        nickname: 테스트시청자
